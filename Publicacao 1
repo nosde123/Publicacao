@@ -1,0 +1,93 @@
+import java.util.ArrayList;
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import javax.swing.JOptionPane;
+
+class Publicacao {
+    private Date dataPublicacao;
+    private String textoPublicacao;
+    private String linkMidia;
+    private static double contadorPublicacao = 0;
+
+    public Publicacao(String textoPublicacao, String linkMidia) {
+        this.dataPublicacao = new Date();
+        this.textoPublicacao = textoPublicacao;
+        this.linkMidia = linkMidia;
+        contadorPublicacao++;
+    }
+
+    public Date getDataPublicacao() {
+        return dataPublicacao;
+    }
+
+    public String getTextoPublicacao() {
+        return textoPublicacao;
+    }
+
+    public String getLinkMidia() {
+        return linkMidia;
+    }
+
+    public static double getContadorPublicacao() {
+        return contadorPublicacao;
+    }
+
+    public void setTextoPublicacao(String textoPublicacao) {
+        this.textoPublicacao = textoPublicacao;
+    }
+
+    public void setLinkMidia(String linkMidia) {
+        this.linkMidia = linkMidia;
+    }
+}
+
+class RedeSocial {
+    private String nome;
+    private String descricao;
+    private ArrayList<Publicacao> publicacoes = new ArrayList<>();
+
+    public RedeSocial(String nome, String descricao) {
+        this.nome = nome;
+        this.descricao = descricao;
+    }
+
+    public void inserePublicacao(Publicacao publi) {
+        publicacoes.add(publi);
+    }
+
+    public void imprimePublicacoes() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+        System.out.println("Nome da Rede Social: " + nome);
+        System.out.println("Descrição da Rede Social: " + descricao);
+        System.out.println("Total de Publicações: " + Publicacao.getContadorPublicacao());
+        System.out.println("Publicações:");
+
+        for (Publicacao publi : publicacoes) {
+            System.out.println("Data de Publicação: " + dateFormat.format(publi.getDataPublicacao()));
+            System.out.println("Texto da Publicação: " + publi.getTextoPublicacao());
+            System.out.println("Link da Mídia: " + publi.getLinkMidia());
+            System.out.println("----------");
+        }
+    }
+}
+
+public class Principal {
+    public static void main(String[] args) {
+        String nomeRedeSocial = JOptionPane.showInputDialog("Digite o nome da Rede Social:");
+        String descricaoRedeSocial = JOptionPane.showInputDialog("Digite a descrição da Rede Social:");
+        RedeSocial redeSocial = new RedeSocial(nomeRedeSocial, descricaoRedeSocial);
+
+        int numPublicacoes = Integer.parseInt(JOptionPane.showInputDialog("Quantas publicações deseja adicionar?"));
+
+        for (int i = 0; i < numPublicacoes; i++) {
+            String texto = JOptionPane.showInputDialog("Digite o texto da publicação:");
+            String linkMidia = JOptionPane.showInputDialog("Digite o link da mídia da publicação");
+            Publicacao publicacao = new Publicacao(texto, linkMidia);
+            redeSocial.inserePublicacao(publicacao);
+        }
+
+        redeSocial.imprimePublicacoes();
+    }
+}
+
